@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.pendulum</groupId>
+    <artifactId>double-pendulum</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>Double Pendulum Simulation</name>
+    <description>A chaotic double pendulum physics simulation compiled to native executable with GraalVM</description>
+
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <mainClass>com.pendulum.DoublePendulum</mainClass>
+    </properties>
+
+    <build>
+        <plugins>
+            <!-- Compiler plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                </configuration>
+            </plugin>
+
+            <!-- Create executable JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${mainClass}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!-- Native image profile - only activated explicitly -->
+        <profile>
+            <id>native</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>0.10.2</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <imageName>double-pendulum</imageName>
+                            <mainClass>${mainClass}</mainClass>
+                            <buildArgs>
+                                <!-- Required for Swing/AWT -->
+                                <arg>-Djava.awt.headless=false</arg>
+                                <!-- Allow incomplete classpath -->
+                                <arg>--allow-incomplete-classpath</arg>
+                                <!-- Optimize for size and startup -->
+                                <arg>-O2</arg>
+                                <!-- No fallback - pure native -->
+                                <arg>--no-fallback</arg>
+                                <!-- Include resources -->
+                                <arg>-H:+AddAllCharsets</arg>
+                                <!-- Report exception stack traces -->
+                                <arg>-H:+ReportExceptionStackTraces</arg>
+                            </buildArgs>
+                            <jvmArgs>
+                                <arg>-Xmx4g</arg>
+                            </jvmArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- Windows-specific native profile -->
+        <profile>
+            <id>native-windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.graalvm.buildtools</groupId>
+                        <artifactId>native-maven-plugin</artifactId>
+                        <version>0.10.2</version>
+                        <extensions>true</extensions>
+                        <executions>
+                            <execution>
+                                <id>build-native</id>
+                                <goals>
+                                    <goal>compile-no-fork</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <imageName>double-pendulum</imageName>
+                            <mainClass>${mainClass}</mainClass>
+                            <buildArgs>
+                                <arg>-Djava.awt.headless=false</arg>
+                                <arg>--allow-incomplete-classpath</arg>
+                                <arg>-O2</arg>
+                                <arg>--no-fallback</arg>
+                                <arg>-H:+AddAllCharsets</arg>
+                                <arg>-H:+ReportExceptionStackTraces</arg>
+                                <!-- Windows subsystem for GUI apps (no console window) -->
+                                <arg>-H:NativeLinkerOption=/SUBSYSTEM:WINDOWS</arg>
+                                <arg>-H:NativeLinkerOption=/ENTRY:mainCRTStartup</arg>
+                            </buildArgs>
+                            <jvmArgs>
+                                <arg>-Xmx4g</arg>
+                            </jvmArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

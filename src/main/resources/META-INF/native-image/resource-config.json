@@ -1,0 +1,17 @@
+{
+  "resources": {
+    "includes": [
+      {"pattern": ".*\\.properties$"},
+      {"pattern": ".*\\.png$"},
+      {"pattern": ".*\\.gif$"},
+      {"pattern": ".*\\.jpg$"},
+      {"pattern": "com/sun/java/swing/plaf/.*"},
+      {"pattern": "javax/swing/plaf/.*"}
+    ]
+  },
+  "bundles": [
+    {"name": "sun.awt.resources.awt"},
+    {"name": "com.sun.swing.internal.plaf.basic.resources.basic"},
+    {"name": "com.sun.swing.internal.plaf.metal.resources.metal"}
+  ]
+}

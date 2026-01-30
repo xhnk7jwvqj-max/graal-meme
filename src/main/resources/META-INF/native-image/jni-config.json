@@ -1,0 +1,48 @@
+[
+  {
+    "name": "java.lang.Boolean",
+    "methods": [{"name": "getBoolean", "parameterTypes": ["java.lang.String"]}]
+  },
+  {
+    "name": "java.lang.System",
+    "methods": [
+      {"name": "getProperty", "parameterTypes": ["java.lang.String"]},
+      {"name": "setProperty", "parameterTypes": ["java.lang.String", "java.lang.String"]}
+    ]
+  },
+  {
+    "name": "sun.awt.windows.WComponentPeer",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "sun.awt.windows.WToolkit",
+    "allDeclaredMethods": true,
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "java.awt.Component",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name": "java.awt.Container",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "java.awt.Window",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "java.awt.Frame",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "javax.swing.JFrame",
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "sun.java2d.SurfaceData",
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  }
+]
